@@ -9,8 +9,8 @@ const process = require("process");
 /** Make Markov machine from text and generate text from it. */
 
 function generateText(text) {
-  let text = new markov.MarkovMachine(text);
-  console.log(text.makeText());
+  let mm = new markov.MarkovMachine(text);
+    console.log(mm.makeText());
 }
 
 
@@ -24,7 +24,6 @@ function makeText(path) {
       generateText(data);
     }
   });
-
 }
 
 

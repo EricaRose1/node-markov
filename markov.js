@@ -1,4 +1,5 @@
-/** Textual markov chain generator */
+const { Console } = require("console");
+const fs = require('fs');
 
 
 class MarkovMachine {
@@ -17,32 +18,32 @@ class MarkovMachine {
    *  {"the": ["cat", "hat"], "cat": ["in"], "in": ["the"], "hat": [null]} */
 
   makeChains() {
-    const chains = newMap();
+    let chains = new Map();
 
-    for (let i = 0; i< this.words.length -1; i++) {
-      let currWords = this.words[i]+ ' ' + this.words[i+1];
-      let nextWords = this.words[i+2] || null;
+    for (let i = 0; i< this.words.length; i++) {
+      let currWords = this.words[i];
+      let nextWords = this.words[i+1] || null;
+
       if (chains.has(currWords)) chains.get(currWords).push(nextWords);
       else chains.set(currWords, [nextWords]);
     }
     this.chains = chains;
-    
   }
 
   // Pick random choice form array
-  static choice(ar) {
-    return ar[Math.floor(Math.random() * ar.length)];
+  static choice(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
   }
 
   /** return random text from chains */
 
   makeText(numWords = 100) {
-    // to start, pick a random number
+    // pick a random key to begin
     let keys = Array.from(this.chains.keys());
     let key = MarkovMachine.choice(keys);
     let out = [];
 
-    // produce markov chain unil reaching termintion word
+    // produce markov chain until reaching termination word
     while (out.length < numWords && key !== null) {
       out.push(key);
       key = MarkovMachine.choice(this.chains.get(key));
@@ -51,6 +52,6 @@ class MarkovMachine {
   }
 }
 
-module.export = {
+module.exports = {
   MarkovMachine,
 };
